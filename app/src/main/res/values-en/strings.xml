@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">StopWatchApp</string>
+    <string name="title_stopwatch_screen">StopWatch</string>
+    <string name="action_save">Save</string>
+    <string name="status_running">Running</string>
+    <string name="action_reset">Reset</string>
+    <string name="bottom_nav_timer">Timer</string>
+    <string name="bottom_nav_records">Records</string>
+    <string name="initial_stopwatch_time">00:00.00</string>
+</resources>
