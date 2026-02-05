@@ -16,6 +16,7 @@ ksp = "2.0.21-1.0.26"
 viewModel = "2.10.0"
 navigation = "2.9.6"
 mockito = "5.21.0"
+mockitoKotlin = "6.2.3"
 kotlinxCoroutinesTest = "1.7.3"
 
 [libraries]
@@ -48,6 +49,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigation" }
 # --- mockito ---
 mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockito" }
 # --- kotlinx-coroutines ---
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 

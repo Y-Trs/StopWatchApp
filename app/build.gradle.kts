@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.stopwatchapp"
-        minSdk = 24
+        minSdk = 28 //市場予測でシェア9割をカバーできるため
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -73,6 +73,7 @@ dependencies {
 //  以下追加
     // --- mockito ---
     testImplementation(libs.mockito)
+    testImplementation(libs.mockito.kotlin)
     // --- kotlinx-coroutines ---
     testImplementation(libs.kotlinx.coroutines.test)
 
@@ -85,4 +86,7 @@ dependencies {
 //    以下追加
     // --- navigation ---
     androidTestImplementation(libs.androidx.navigation.testing)
+    // --- mockito ---
+    androidTestImplementation(libs.mockito.android) // UInstrumentation Testでモック作成するにはこちらも必要
+    androidTestImplementation(libs.mockito.kotlin)
 }
