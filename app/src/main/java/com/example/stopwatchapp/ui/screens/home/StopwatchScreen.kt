@@ -41,7 +41,8 @@ object StopWatchHome
 fun StopWatchScreen(
     modifier: Modifier = Modifier,
     currentRoute: String?,
-    viewModel: StopWatchViewModel
+    viewModel: StopWatchViewModel,
+    onNavigateToEntry: (String) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -53,6 +54,7 @@ fun StopWatchScreen(
         onClickForStart = viewModel::start,
         onClickForStop = viewModel::stop,
         onClickForReset = viewModel::reset,
+        onNavigateToEntry = onNavigateToEntry,
         modifier = modifier
     )
 }
@@ -67,14 +69,15 @@ fun StopWatchScreenContent(
     isPaused: Boolean = false,
     onClickForStart: () -> Unit = {},
     onClickForStop: () -> Unit = {},
-    onClickForReset: () -> Unit = {}
+    onClickForReset: () -> Unit = {},
+    onNavigateToEntry: (String) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
             TopBar(
                 title = stringResource(R.string.title_stopwatch_screen),
                 actionText = if (isPaused) stringResource(R.string.action_save) else null,
-                onClick = { /* 後ほど実装 */ }
+                onClick = { onNavigateToEntry(stopWatchTime) }
             )
         },
         bottomBar = {

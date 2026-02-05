@@ -1,10 +1,25 @@
 <resources>
     <string name="app_name">StopWatchApp</string>
+
+    // AppBarのタイトル
     <string name="title_stopwatch_screen">StopWatch</string>
-    <string name="action_save">Save</string>
-    <string name="status_running">Running</string>
-    <string name="action_reset">Reset</string>
+    <string name="title_entry_screen">New Record</string>
+    <string name="title_detail_screen">Record Detail</string>
+
+    // BottomBarのタイトル
     <string name="bottom_nav_timer">Timer</string>
     <string name="bottom_nav_records">Records</string>
+
+    // action
+    <string name="action_save">Save</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_exit">Exit</string>
+
+    // 記録、Record関係
+    <string name="status_running">Running</string>
     <string name="initial_stopwatch_time">00:00.00</string>
+    <string name="record_title">Title</string>
+    <string name="record_description">Description</string>
 </resources>
