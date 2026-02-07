@@ -5,6 +5,7 @@
     <string name="title_stopwatch_screen">StopWatch</string>
     <string name="title_entry_screen">New Record</string>
     <string name="title_detail_screen">Record Detail</string>
+    <string name="title_edit_screen">Record Edit</string>
 
     // BottomBarのタイトル
     <string name="bottom_nav_timer">Timer</string>
@@ -12,6 +13,7 @@
 
     // action
     <string name="action_save">Save</string>
+    <string name="action_update">Update</string>
     <string name="action_reset">Reset</string>
     <string name="action_edit">Edit</string>
     <string name="action_cancel">Cancel</string>

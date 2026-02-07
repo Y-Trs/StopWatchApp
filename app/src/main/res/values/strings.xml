@@ -5,6 +5,7 @@
     <string name="title_stopwatch_screen">ストップウォッチ</string>
     <string name="title_entry_screen">新規作成</string>
     <string name="title_detail_screen">記録詳細</string>
+    <string name="title_edit_screen">編集画面</string>
 
     // BottomBarのタイトル
     <string name="bottom_nav_timer">タイム測定</string>
@@ -12,6 +13,7 @@
 
     // action
     <string name="action_save">保存</string>
+    <string name="action_update">更新</string>
     <string name="action_reset">リセット</string>
     <string name="action_edit">編集</string>
     <string name="action_cancel">キャンセル</string>
