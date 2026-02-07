@@ -12,6 +12,7 @@ data class RecordUiState(
 
 fun RecordUiState.toRecord(): Record {
     return Record(
+        id = this.id,
         title = if (this.title != "") this.title else this.recordDate,
         description = this.description,
         time = this.time,

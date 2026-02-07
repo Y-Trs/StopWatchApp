@@ -12,24 +12,32 @@ import com.example.stopwatchapp.repository.RecordRepositoryForRoom
 import com.example.stopwatchapp.ui.screens.home.StopWatchViewModel
 import com.example.stopwatchapp.ui.screens.home.SystemTimeSource
 import com.example.stopwatchapp.ui.screens.record.detail.DetailViewModel
+import com.example.stopwatchapp.ui.screens.record.edit.EditViewModel
 import com.example.stopwatchapp.ui.screens.record.entry.EntryViewModel
 
 // 各ViewModelの生成を一元管理するファイル
 object ViewModelProvider {
     val Factory = viewModelFactory {
-        initializer {
+        initializer { // ストップウォッチ画面用
             StopWatchViewModel(timeSource = SystemTimeSource)
         }
-        initializer {
+        initializer { // 新規登録用
             val recordDao = getRecordDao(this)
             EntryViewModel(
                 recordRepository = RecordRepositoryForRoom(recordDao),
                 savedStateHandle = createSavedStateHandle()
             )
         }
-        initializer {
+        initializer { // 詳細画面用
             val recordDao = getRecordDao(this)
             DetailViewModel(
+                recordRepository = RecordRepositoryForRoom(recordDao),
+                savedStateHandle = createSavedStateHandle()
+            )
+        }
+        initializer { // 編集画面用
+            val recordDao = getRecordDao(this)
+            EditViewModel(
                 recordRepository = RecordRepositoryForRoom(recordDao),
                 savedStateHandle = createSavedStateHandle()
             )

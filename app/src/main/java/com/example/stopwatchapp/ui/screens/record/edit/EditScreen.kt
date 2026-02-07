@@ -1,4 +1,4 @@
-package com.example.stopwatchapp.ui.screens.record.detail
+package com.example.stopwatchapp.ui.screens.record.edit
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,61 +22,73 @@ import com.example.stopwatchapp.ui.common.TopBar
 import com.example.stopwatchapp.ui.screens.record.common.Form
 import com.example.stopwatchapp.ui.screens.record.common.BottomBar
 import com.example.stopwatchapp.ui.theme.StopWatchAppTheme
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecordDetail(val id: Long)
+data class RecordEdit(val id: Long)
 
 @Composable
-fun DetailScreen(
+fun EditScreen(
     modifier: Modifier = Modifier,
-    viewModel: DetailViewModel,
-    onNavigateToHome: () -> Unit = {},
-    onNavigateToEdit: (Long) -> Unit = {},
+    viewModel: EditViewModel,
+    navigateToUpdatedDetail: (Long) -> Unit = {},
+    navigateBack: () -> Unit = {},
     currentRoute: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    DetailContents(
+
+    EditContents(
         modifier = modifier,
-        recordId = uiState.id,
         stopWatchTime = uiState.time,
         recordDate = uiState.recordDate,
         title = uiState.title,
         description = uiState.description,
-        onNavigateToHome = onNavigateToHome,
-        onNavigateToEdit = onNavigateToEdit,
-        currentRoute = currentRoute
+        onTitleChanged = viewModel::updateTitle,
+        onDescriptionChanged = viewModel::updateDescription,
+        update = viewModel::update,
+        navigateToUpdatedDetail = navigateToUpdatedDetail,
+        cancel = navigateBack,
+        currentRoute = currentRoute,
     )
 
 }
 
 @Composable
-fun DetailContents(
+fun EditContents(
     modifier: Modifier = Modifier,
-    recordId: Long,
     stopWatchTime: String,
     recordDate: String,
     title: String,
     description: String,
-    onNavigateToHome: () -> Unit = {},
-    onNavigateToEdit: (Long) -> Unit = {},
+    onTitleChanged: (String) -> Unit = {},
+    onDescriptionChanged: (String) -> Unit = {},
+    update: suspend () -> Long,
+    navigateToUpdatedDetail: (Long) -> Unit = {},
+    cancel: () -> Unit = {},
     currentRoute: String? = null
 ) {
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.title_detail_screen),
-                actionText = stringResource(R.string.action_exit),
-                onClick = onNavigateToHome
+                title = stringResource(R.string.title_edit_screen),
+                actionText = stringResource(R.string.action_cancel),
+                onClick = cancel
             )
         },
         bottomBar = {
             BottomBar(
                 modifier = Modifier.windowInsetsPadding(BottomAppBarDefaults.windowInsets),
-                textForConfirm = stringResource(R.string.action_edit),
-                textForNotConfirm = stringResource(R.string.action_exit),
-                onClickForConfirm = { onNavigateToEdit(recordId) },
-                onClickForNotConfirm = onNavigateToHome
+                textForConfirm = stringResource(R.string.action_update),
+                textForNotConfirm = stringResource(R.string.action_cancel),
+                onClickForConfirm = {
+                    coroutineScope.launch {
+                        val id = update()
+                        navigateToUpdatedDetail(id)
+                    }
+                },
+                onClickForNotConfirm = cancel
             )
         }
     ) {innerPadding ->
@@ -92,6 +105,8 @@ fun DetailContents(
                 recordDate = recordDate,
                 title = title,
                 description = description,
+                onTitleChanged = onTitleChanged,
+                onDescriptionChanged = onDescriptionChanged,
                 currentRoute = currentRoute
             )
         }
@@ -101,27 +116,27 @@ fun DetailContents(
 // --------------------
 // 以下プレビュー
 // --------------------
-private object DetailPreviewData {
-    const val STOPWATCH_TIME = "08:12.34"
-    const val RECORD_DATE = "2024/08/15 10:30:00 木曜日"
-    const val TITLE = "朝のジョギング"
-    const val DESCRIPTION = "公園を3周。天気も良く、気持ちよく走れた。"
+private object EditPreviewData {
+    const val STOPWATCH_TIME = "12:34.56"
+    const val RECORD_DATE = "2026/01/01 12:34:56 木曜日"
+    const val TITLE = "ランニング"
+    const val DESCRIPTION = "近所の公園を3周"
 }
 
 @Preview(
-    name = "lignt mode",
+    name = "light mode",
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO
 )
 @Composable
-private fun DetailContentsPreviewForLightMode() {
+private fun EditContentsPreviewForLightMode() {
     StopWatchAppTheme{
-        DetailContents(
-            recordId = 1L,
-            stopWatchTime = DetailPreviewData.STOPWATCH_TIME,
-            title = DetailPreviewData.TITLE,
-            description = DetailPreviewData.DESCRIPTION,
-            recordDate = DetailPreviewData.RECORD_DATE,
+        EditContents(
+            stopWatchTime = EditPreviewData.STOPWATCH_TIME,
+            title = EditPreviewData.TITLE,
+            description = EditPreviewData.DESCRIPTION,
+            recordDate = EditPreviewData.RECORD_DATE,
+            update = {1L}
         )
     }
 }
@@ -132,14 +147,14 @@ private fun DetailContentsPreviewForLightMode() {
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-private fun DetailContentsPreviewForDarkMode() {
+private fun EditContentsPreviewForDarkMode() {
     StopWatchAppTheme{
-        DetailContents(
-            recordId = 1L,
-            stopWatchTime = DetailPreviewData.STOPWATCH_TIME,
-            title = DetailPreviewData.TITLE,
-            description = DetailPreviewData.DESCRIPTION,
-            recordDate = DetailPreviewData.RECORD_DATE,
+        EditContents(
+            stopWatchTime = EditPreviewData.STOPWATCH_TIME,
+            title = EditPreviewData.TITLE,
+            description = EditPreviewData.DESCRIPTION,
+            recordDate = EditPreviewData.RECORD_DATE,
+            update = {1L}
         )
     }
 }
