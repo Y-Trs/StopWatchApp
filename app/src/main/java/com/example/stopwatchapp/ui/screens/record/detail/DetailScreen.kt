@@ -31,12 +31,13 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel,
     onNavigateToHome: () -> Unit = {},
-    onNavigateToEdit: () -> Unit = {},
+    onNavigateToEdit: (Long) -> Unit = {},
     currentRoute: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
     DetailContents(
         modifier = modifier,
+        recordId = uiState.id,
         stopWatchTime = uiState.time,
         recordDate = uiState.recordDate,
         title = uiState.title,
@@ -51,12 +52,13 @@ fun DetailScreen(
 @Composable
 fun DetailContents(
     modifier: Modifier = Modifier,
+    recordId: Long,
     stopWatchTime: String,
     recordDate: String,
     title: String,
     description: String,
     onNavigateToHome: () -> Unit = {},
-    onNavigateToEdit: () -> Unit = {},
+    onNavigateToEdit: (Long) -> Unit = {},
     currentRoute: String? = null
 ) {
     Scaffold(
@@ -72,7 +74,7 @@ fun DetailContents(
                 modifier = Modifier.windowInsetsPadding(BottomAppBarDefaults.windowInsets),
                 textForConfirm = stringResource(R.string.action_edit),
                 textForNotConfirm = stringResource(R.string.action_exit),
-                onClickForConfirm = onNavigateToEdit,
+                onClickForConfirm = { onNavigateToEdit(recordId) },
                 onClickForNotConfirm = onNavigateToHome
             )
         }
@@ -115,6 +117,7 @@ private object DetailPreviewData {
 private fun DetailContentsPreviewForLightMode() {
     StopWatchAppTheme{
         DetailContents(
+            recordId = 1L,
             stopWatchTime = DetailPreviewData.STOPWATCH_TIME,
             title = DetailPreviewData.TITLE,
             description = DetailPreviewData.DESCRIPTION,
@@ -132,6 +135,7 @@ private fun DetailContentsPreviewForLightMode() {
 private fun DetailContentsPreviewForDarkMode() {
     StopWatchAppTheme{
         DetailContents(
+            recordId = 1L,
             stopWatchTime = DetailPreviewData.STOPWATCH_TIME,
             title = DetailPreviewData.TITLE,
             description = DetailPreviewData.DESCRIPTION,

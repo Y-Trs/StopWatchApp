@@ -13,6 +13,8 @@ import com.example.stopwatchapp.ui.screens.home.StopWatchHome
 import com.example.stopwatchapp.ui.screens.home.StopWatchScreen
 import com.example.stopwatchapp.ui.screens.record.detail.RecordDetail
 import com.example.stopwatchapp.ui.screens.record.detail.DetailScreen
+import com.example.stopwatchapp.ui.screens.record.edit.EditScreen
+import com.example.stopwatchapp.ui.screens.record.edit.RecordEdit
 import com.example.stopwatchapp.ui.screens.record.entry.RecordEntry
 import com.example.stopwatchapp.ui.screens.record.entry.EntryScreen
 
@@ -55,7 +57,23 @@ fun StopWatchNavigation(navController: NavHostController) {
                         launchSingleTop = true
                     }
                 },
-                onNavigateToEdit = {/* 後で実装 */}
+                onNavigateToEdit = {id ->
+                    navController.navigate(RecordEdit(id = id))
+                }
+            )
+        }
+        // 編集画面
+        composable<RecordEdit> { backStackEntry ->
+            EditScreen(
+                viewModel = viewModel(factory = ViewModelProvider.Factory),
+                currentRoute = currentRoute,
+                navigateBack = { navController.navigateUp() },
+                navigateToUpdatedDetail = {id ->
+                    navController.navigate(RecordDetail(id = id)) {
+                        popUpTo(StopWatchHome) { inclusive = true }
+                        launchSingleTop = false
+                    }
+                }
             )
         }
     }
