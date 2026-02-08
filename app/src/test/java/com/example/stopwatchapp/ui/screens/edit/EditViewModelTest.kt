@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.stopwatchapp.data.local.Record
 import com.example.stopwatchapp.repository.RecordRepository
 import com.example.stopwatchapp.rule.MainDispatcherRule
-import com.example.stopwatchapp.ui.screens.record.detail.DetailViewModel
 import com.example.stopwatchapp.ui.screens.record.edit.EditViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -112,5 +111,11 @@ class EditViewModelTest {
         val recordDate = viewModel.uiState.value.recordDate
         assertNotEquals(recordDate, title) // タイトル空白の場合、recordDateと同じになるかテスト
         verify(recordRepository).updateRecord(any()) // updateRecordメソッドが呼ばれているかテスト
+    }
+
+    @Test // 削除メソッドが呼ばれていることをテスト
+    fun viewModel_delete_callsRepository() = runTest{
+        viewModel.delete()
+        verify(recordRepository).deleteRecord(any()) // updateRecordメソッドが呼ばれているかテスト
     }
 }

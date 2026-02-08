@@ -18,10 +18,15 @@
     <string name="action_edit">編集</string>
     <string name="action_cancel">キャンセル</string>
     <string name="action_exit">閉じる</string>
+    <string name="action_delete">削除</string>
 
     // 記録、Record関係
     <string name="status_running">計測中</string>
     <string name="initial_stopwatch_time">00:00.00</string>
     <string name="record_title">タイトル</string>
     <string name="record_description">内容</string>
+
+    // 削除ダイアログのメッセージ
+    <string name="deleteDialog_title">確認</string>
+    <string name="deleteDialog_description">選択した記録を削除してもよろしいでしょうか？</string>
 </resources>

@@ -12,7 +12,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,6 +24,7 @@ import com.example.stopwatchapp.R
 import com.example.stopwatchapp.ui.common.TopBar
 import com.example.stopwatchapp.ui.screens.record.common.Form
 import com.example.stopwatchapp.ui.screens.record.common.BottomBar
+import com.example.stopwatchapp.ui.screens.record.delete.DeleteDialog
 import com.example.stopwatchapp.ui.theme.StopWatchAppTheme
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -34,6 +38,7 @@ fun EditScreen(
     viewModel: EditViewModel,
     navigateToUpdatedDetail: (Long) -> Unit = {},
     navigateBack: () -> Unit = {},
+    navigateToHome: () -> Unit = {},
     currentRoute: String? = null
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -48,7 +53,9 @@ fun EditScreen(
         onDescriptionChanged = viewModel::updateDescription,
         update = viewModel::update,
         navigateToUpdatedDetail = navigateToUpdatedDetail,
+        navigateToHome = navigateToHome,
         cancel = navigateBack,
+        delete = viewModel::delete,
         currentRoute = currentRoute,
     )
 
@@ -65,10 +72,13 @@ fun EditContents(
     onDescriptionChanged: (String) -> Unit = {},
     update: suspend () -> Long,
     navigateToUpdatedDetail: (Long) -> Unit = {},
+    navigateToHome: () -> Unit = {},
     cancel: () -> Unit = {},
+    delete: suspend () -> Unit = {},
     currentRoute: String? = null
 ) {
     val coroutineScope = rememberCoroutineScope()
+    var showDeleteDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopBar(
@@ -81,14 +91,15 @@ fun EditContents(
             BottomBar(
                 modifier = Modifier.windowInsetsPadding(BottomAppBarDefaults.windowInsets),
                 textForConfirm = stringResource(R.string.action_update),
-                textForNotConfirm = stringResource(R.string.action_cancel),
+                textForNotConfirm = stringResource(R.string.action_delete),
+                isDestructive = true,
                 onClickForConfirm = {
                     coroutineScope.launch {
                         val id = update()
                         navigateToUpdatedDetail(id)
                     }
                 },
-                onClickForNotConfirm = cancel
+                onClickForNotConfirm = { showDeleteDialog = true }
             )
         }
     ) {innerPadding ->
@@ -109,6 +120,17 @@ fun EditContents(
                 onDescriptionChanged = onDescriptionChanged,
                 currentRoute = currentRoute
             )
+            if (showDeleteDialog) {
+                DeleteDialog(
+                    onConfirm = {
+                        coroutineScope.launch {
+                            delete()
+                            navigateToHome()
+                        }
+                    },
+                    onDismiss = { showDeleteDialog = false }
+                )
+            }
         }
     }
 }

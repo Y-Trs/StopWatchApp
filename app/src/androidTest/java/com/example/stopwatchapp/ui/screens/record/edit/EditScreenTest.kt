@@ -3,9 +3,9 @@ package com.example.stopwatchapp.ui.screens.record.edit
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.lifecycle.SavedStateHandle
@@ -30,6 +30,9 @@ class EditScreenTest {
     val appBarTitleRes: String = context.getString(R.string.title_edit_screen) // 日：編集画面、英：Record Edit
     val actionCancelRes: String = context.getString(R.string.action_cancel) // 日：キャンセル、英：Cancel
     val updateButtonRes: String = context.getString(R.string.action_update) // 日：更新、英：Update
+    val deleteButtonRes: String = context.getString(R.string.action_delete) // 日：削除、英：Delete
+    // 日：選択した記録を削除してもよろしいでしょうか？、英：Are you sure you want to delete the record(s)？
+    val dialogDescriptionRes: String = context.getString(R.string.deleteDialog_description)
 
 
     val testRecordId = 1L
@@ -86,15 +89,21 @@ class EditScreenTest {
         composeTestRule.onNodeWithText(testDescription).assertIsDisplayed()
     }
 
-    @Test// AppBarのタイトルとキャンセルボタン、BottomBarにある更新ボタンとキャンセルボタンが表示されていることを検証
+    @Test// AppBarのタイトルとキャンセルボタン、BottomBarにある更新ボタンが表示されていることを検証
     fun editScreen_displayAppBarAndBottomButton() {
-        // AppBarのタイトル、BottomBarにある保存ボタンが表示されていることを検証
         composeTestRule.onNodeWithText(appBarTitleRes).assertIsDisplayed()
         composeTestRule.onNodeWithText(updateButtonRes).assertIsDisplayed()
+        composeTestRule.onNodeWithText(actionCancelRes).assertIsDisplayed()
+    }
 
-        // AppBarとBottomBarにそれぞれ1つずつあるキャンセルボタンが存在しかつどちらも表示されていることを検証
-        val cancelButton = composeTestRule.onAllNodesWithText(actionCancelRes)
-        cancelButton[0].assertIsDisplayed()
-        cancelButton[1].assertIsDisplayed()
+    @Test // 削除ボタンを押すと削除ダイアログが表示されていることを検証
+    fun editScreen_clickDeleteButton_showDeleteDialog() {
+        // 削除ボタンが表示されていることの検証とクリック
+        composeTestRule.onNodeWithText(deleteButtonRes)
+            .assertIsDisplayed()
+            .performClick()
+
+        // 削除ダイアログが表示されているかを検証。ここでは説明が表示されていることを検証。
+        composeTestRule.onNodeWithText(dialogDescriptionRes).assertIsDisplayed()
     }
 }

@@ -74,4 +74,9 @@ class EditViewModel(
         recordRepository.updateRecord(record)
         return record.id
     }
+
+    suspend fun delete() {
+        val record: Record = _uiState.value.toRecord()
+        recordRepository.deleteRecord(record)
+    }
 }
