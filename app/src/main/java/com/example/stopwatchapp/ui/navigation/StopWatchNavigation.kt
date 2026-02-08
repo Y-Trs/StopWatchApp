@@ -73,6 +73,12 @@ fun StopWatchNavigation(navController: NavHostController) {
                         popUpTo(StopWatchHome) { inclusive = true }
                         launchSingleTop = false
                     }
+                },
+                navigateToHome = {
+                    navController.navigate(StopWatchHome) {
+                        popUpTo(StopWatchHome) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
             )
         }
