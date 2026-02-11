@@ -42,7 +42,8 @@ fun StopWatchScreen(
     modifier: Modifier = Modifier,
     currentRoute: String?,
     viewModel: StopWatchViewModel,
-    onNavigateToEntry: (String) -> Unit = {}
+    onNavigateToEntry: (String) -> Unit = {},
+    onNavigateToList: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -55,6 +56,7 @@ fun StopWatchScreen(
         onClickForStop = viewModel::stop,
         onClickForReset = viewModel::reset,
         onNavigateToEntry = onNavigateToEntry,
+        onNavigateToList = onNavigateToList,
         modifier = modifier
     )
 }
@@ -70,7 +72,8 @@ fun StopWatchScreenContent(
     onClickForStart: () -> Unit = {},
     onClickForStop: () -> Unit = {},
     onClickForReset: () -> Unit = {},
-    onNavigateToEntry: (String) -> Unit = {}
+    onNavigateToEntry: (String) -> Unit = {},
+    onNavigateToList: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -82,7 +85,7 @@ fun StopWatchScreenContent(
         },
         bottomBar = {
             if (!isRunning && !isPaused) {
-                BottomBar(currentRoute = currentRoute)
+                BottomBar(currentRoute = currentRoute, onClick = onNavigateToList)
             } else if(isPaused) {
                 HomeCommonBottomBar(
                     text = stringResource(R.string.action_reset),
