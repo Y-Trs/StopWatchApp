@@ -1,6 +1,7 @@
 package com.example.stopwatchapp.ui
 
 import android.app.Application
+import android.widget.ListView
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -14,6 +15,7 @@ import com.example.stopwatchapp.ui.screens.home.SystemTimeSource
 import com.example.stopwatchapp.ui.screens.record.detail.DetailViewModel
 import com.example.stopwatchapp.ui.screens.record.edit.EditViewModel
 import com.example.stopwatchapp.ui.screens.record.entry.EntryViewModel
+import com.example.stopwatchapp.ui.screens.record.list.ListViewModel
 
 // 各ViewModelの生成を一元管理するファイル
 object ViewModelProvider {
@@ -41,6 +43,10 @@ object ViewModelProvider {
                 recordRepository = RecordRepositoryForRoom(recordDao),
                 savedStateHandle = createSavedStateHandle()
             )
+        }
+        initializer { // 一覧画面用
+            val recordDao = getRecordDao(this)
+            ListViewModel(recordRepository = RecordRepositoryForRoom(recordDao))
         }
     }
 
