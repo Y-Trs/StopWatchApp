@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.stopwatchapp.R
 import com.example.stopwatchapp.ui.screens.home.StopWatchHome
+import com.example.stopwatchapp.ui.screens.record.list.RecordList
 
 data class BottomNavItem(
     val currentRoute: String?,
@@ -26,12 +27,12 @@ data class BottomNavItem(
 )
 val navItem = listOf(
     BottomNavItem(// タイム測定に関する情報
-        StopWatchHome::class.qualifiedName, // "com.example.stopwatchapp.ui.screens.home.StopWatchHome"n
+        StopWatchHome::class.qualifiedName, // "com.example.stopwatchapp.ui.screens.home.StopWatchHome"
         R.string.bottom_nav_timer,
         R.drawable.ic_timer
     ),
     BottomNavItem(// 記録一覧に関する情報
-        "/* 後で実装 */",
+        RecordList::class.qualifiedName, // "com.example.stopwatchapp.ui.screens.record.list.RecordList"
         R.string.bottom_nav_records,
         R.drawable.ic_article
     )
@@ -41,6 +42,7 @@ val navItem = listOf(
 @Composable
 fun BottomBar(
     currentRoute: String?,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
@@ -56,7 +58,7 @@ fun BottomBar(
                         contentDescription = stringResource(id = navItem.titleRes)
                     )
                 },
-                onClick = {/*　後で実装　*/}
+                onClick = if (currentRoute != navItem.currentRoute) { onClick } else { {} }
             )
         }
     }

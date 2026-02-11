@@ -17,6 +17,8 @@ import com.example.stopwatchapp.ui.screens.record.edit.EditScreen
 import com.example.stopwatchapp.ui.screens.record.edit.RecordEdit
 import com.example.stopwatchapp.ui.screens.record.entry.RecordEntry
 import com.example.stopwatchapp.ui.screens.record.entry.EntryScreen
+import com.example.stopwatchapp.ui.screens.record.list.ListScreen
+import com.example.stopwatchapp.ui.screens.record.list.RecordList
 
 @Composable
 fun StopWatchNavigation(navController: NavHostController) {
@@ -31,7 +33,8 @@ fun StopWatchNavigation(navController: NavHostController) {
                 viewModel = viewModel(factory = ViewModelProvider.Factory),
                 onNavigateToEntry = {time ->
                     navController.navigate(route = RecordEntry(time = time))
-                }
+                },
+                onNavigateToList = { navController.navigate(route = RecordList) }
             )
         }
         // 記録登録画面
@@ -79,6 +82,17 @@ fun StopWatchNavigation(navController: NavHostController) {
                         popUpTo(StopWatchHome) { inclusive = true }
                         launchSingleTop = true
                     }
+                }
+            )
+        }
+        // 一覧画面
+        composable<RecordList> {
+            ListScreen(
+                viewModel = viewModel(factory = ViewModelProvider.Factory),
+                currentRoute = currentRoute,
+                navigateToHome = { navController.navigate(route = StopWatchHome) },
+                navigateToDetail = { id ->
+                    navController.navigate(route = RecordDetail(id))
                 }
             )
         }
